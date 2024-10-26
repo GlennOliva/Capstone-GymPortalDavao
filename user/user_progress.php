@@ -58,6 +58,7 @@ if (isset($_SESSION['user_id'])) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="css/landing-page.css">
 
 
@@ -165,8 +166,6 @@ if (isset($_SESSION['user_id'])) {
         .btn-container {
             text-align: center;
         }
-
-
     }
 </style>
 
@@ -222,82 +221,125 @@ if (isset($_SESSION['user_id'])) {
             <p>Age: <?php echo $age;?></p>
             <p>Email: <?php echo $email;?></p>
             <p>Contact: <?php echo $contact_no;?></p>
-            <a href="user_progress.php" class="btn btn-primary" style="margin-top: 20px;">Progress</a>
-
+            <a href="profile.php" class="btn btn-primary" style="margin-top: 20px;">Profile</a>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
-        <form method="post" enctype="multipart/form-data">
-                <div class="form-group-inline">
-                    <div class="form-group">
-                    <label for="name">First Name</label>
-                    <input type="text" class="form-control" name="first_name" id="name" placeholder="First Name" value="<?php echo $firstname;?>" required>
-                    </div>
-                    <div class="form-group">
-                    <label for="name">Last Name</label>
-                    <input type="text" class="form-control" name="last_name" id="name" placeholder="Last Name" value="<?php echo $lastname;?>" required>
-                    </div>
-                    <div class="form-group">
-                    <label for="name">User Name</label>
-                    <input type="text" class="form-control" name="user_name" id="name" placeholder="User Name" value="<?php echo $username;?>" required>
-                    </div>
-                </div>
-                <div class="form-group-inline">
-                    <div class="form-group">
-                        <label for="age">Age</label>
-                        <input type="text" class="form-control" name="age" id="age" placeholder="Age" required value="<?php echo $age;?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="contact">Contact #</label>
-                        <input type="text" class="form-control" name="contact" id="contact" placeholder="Contact Number" value="<?php echo $contact_no;?>" required>
-                    </div>
-                    <div class="form-group">
-                    <label for="name">Password</label>
-                    <input type="password" class="form-control" name="current_password" id="name" placeholder="Enter Current Password" required>
-                    </div>
-                </div>
+        <canvas id="userProgressChart" width="400" height="200"></canvas>
 
-                <div class="form-group-inline">
-                <div class="form-group">
-                    <label for="name">New Password</label>
-                    <input type="password" class="form-control" name="new_password" id="name" placeholder="Enter New Password" required>
-                    </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" value="<?php echo $email;?>" required>
-                </div>
-                    <div class="form-group">
-                        <label for="contact">Upload image</label>
-                        <input type="file" class="form-control" name="image" id="" required>
-                    </div>
-                </div>
-         
-                <div class="form-group-inline">
-                    <div class="form-group">
-                        <label for="dob">Date of Birth</label>
-                        <input type="date" class="form-control" name="dob" id="dob" placeholder="MM/DD/YYYY" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="sex">Sex</label>
-                        <input type="text" class="form-control" name="sex" id="sex" placeholder="Sex" value="<?php echo $sex;?>"  required >
-                    </div>
-                    <div class="form-group">
-                        <label for="zipcode">Zip Code</label>
-                        <input type="text" class="form-control" name="zip_code" id="zipcode" placeholder="Zip Code" required value="<?php echo $zip_code;?>">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="about">About User</label>
-                    <textarea class="form-control" id="about" name="about_user" rows="4" placeholder="About User" required><?php echo $about_user;?></textarea>
-                </div>
-                <div class="btn-container">
-                <input type="hidden" name="id" value="<?php echo $id;?>">
-                    <button type="submit" name="update_profile" class="btn btn-primary">Update</button>
-                </div>
-            </form>
+<div id="dataPopup" style="display: none; border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
+    <p id="exercise"></p>
+    <p id="weight"></p>
+    <p id="reps"></p>
+</div>
         </div>
     </section>
+
+
+    <script>
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    async function loadChartData() {
+        try {
+            const response = await fetch('fetch_chart_data.php');
+            const data = await response.json();
+
+            if (typeof data !== 'object') {
+                console.error('Unexpected data format:', data);
+                return;
+            }
+
+            // Prepare labels and aggregate weights and reps per date for display
+            const labels = Object.keys(data);
+            const weights = labels.map(date => data[date].reduce((sum, item) => sum + parseFloat(item.weight), 0) / data[date].length); // Average weight per date
+            const repetitions = labels.map(date => data[date].reduce((sum, item) => sum + parseFloat(item.repetition), 0) / data[date].length); // Average reps per date
+
+            // Generate random colors for each bar
+            const weightColors = weights.map(() => getRandomColor());
+            const repetitionColors = repetitions.map(() => getRandomColor());
+
+            const ctx = document.getElementById('userProgressChart').getContext('2d');
+            const userProgressChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Average Weight (kg)',
+                            data: weights,
+                            backgroundColor: weightColors // Use random colors for weight bars
+                        },
+                        {
+                            label: 'Average Reps',
+                            data: repetitions,
+                            backgroundColor: repetitionColors // Use random colors for reps bars
+                        }
+                    ]
+                },
+                options: {
+                    onClick: (evt) => {
+                        const points = userProgressChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+                        if (points.length) {
+                            const index = points[0].index;
+                            const date = labels[index];
+                            showDataPopup(date, data[date]); // Pass all records for that date to the popup
+                        }
+                    },
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: { display: true, text: 'Date' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Values' }
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error loading chart data:', error);
+        }
+    }
+
+    function showDataPopup(date, records) {
+    const popup = document.getElementById('dataPopup');
+    popup.innerHTML = `<p style="font-weight: bold; margin-bottom: 10px;">Date: ${date}</p>`; // Display the date
+
+    records.forEach((record) => {
+        const recordDiv = document.createElement('div');
+        recordDiv.style.cssText = `
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+        `;
+        recordDiv.innerHTML = `
+            <p style="font-size: 14px; font-weight: bold;">${record.weight} kg</p>
+            <p style="margin: 5px 0;">${record.excercise}</p>
+            <p style="font-size: 14px; font-weight: bold;">${record.repetition} Reps</p>
+        `;
+        popup.appendChild(recordDiv);
+    });
+
+    popup.style.display = 'block';
+}
+
+    document.addEventListener('DOMContentLoaded', loadChartData);
+</script>
+
+
+
 
 
     <?php

@@ -310,6 +310,12 @@ textarea {
             <input type="text" placeholder="Repetition" name="reps" required>
         </div>
 
+        <div class="row">
+    <input type="date" name="created_at" placeholder="Repetition Date" required>
+</div>
+
+
+
         <!-- Buttons -->
         <div class="buttons">
             <input type="hidden" name="user_id" value="<?php echo $id;?>">
@@ -328,10 +334,11 @@ if (isset($_POST['submit_inventory'])) {
     $exercise = $_POST['exercise'];
     $weight = $_POST['weight'];
     $reps = $_POST['reps'];
+    $created_at = $_POST['created_at'];
 
     // Insert query for the service
-    $sql = "INSERT INTO tbl_userprogress (user_id, admin_id, excercise, weight, repetition)
-            VALUES ('$user_id','$admin_id','$exercise','$weight','$reps' )";
+    $sql = "INSERT INTO tbl_userprogress (user_id, admin_id, excercise, weight, repetition, created_at)
+            VALUES ('$user_id','$admin_id','$exercise','$weight','$reps','$created_at' )";
 
     // Execute the query
     $res = mysqli_query($conn, $sql);

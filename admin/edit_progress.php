@@ -351,6 +351,11 @@ textarea {
         </div>
         <!-- Second row -->
 
+        
+        <div class="row">
+    <input type="date" name="created_at" placeholder="Repetition Date" required>
+</div>
+
         <!-- Buttons -->
         <div class="buttons">
             <input type="hidden" name="id" value="<?php echo $id;?>">
@@ -368,10 +373,11 @@ if (isset($_POST['update_inventory'])) {
     $weight= $_POST['weight'];
     $repetition = $_POST['reps'];
     $id = $_POST['id'];
+    $created_at = $_POST['created_at'];
    
 
     // Update query
-    $sql = "UPDATE tbl_userprogress SET excercise = '$exercise', weight = '$weight', repetition = '$repetition' WHERE id=$id";
+    $sql = "UPDATE tbl_userprogress SET excercise = '$exercise', weight = '$weight', repetition = '$repetition', created_at = '$created_at' WHERE id=$id";
 
     // Execute the query
     $res = mysqli_query($conn, $sql);

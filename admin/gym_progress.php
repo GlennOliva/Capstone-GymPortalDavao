@@ -265,6 +265,7 @@ if ($res == true) {
                             <th>Exercise</th>
                             <th>Weight</th>
                             <th>Repitition</th>
+                            <th>Date</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -288,12 +289,14 @@ if ($res == true) {
                 $weight = $row['weight'];
                 $reps = $row['repetition'];
                 $user_id = $row['user_id'];
+                $created_at = $row['created_at'];
     ?>
                 <tr>
                     <td><?php echo $sn++; ?></td>
                     <td><?php echo $excercise; ?></td>
                     <td><?php echo $weight ?></td>
                     <td><?php echo $reps ?></td>
+                    <td><?php echo $created_at;?></td>
                     <td class="action-buttons">
     <a href="edit_progress.php?id=<?php echo $id; ?>" class="edit">Edit</a>
     <a href="delete_progress.php?id=<?php echo $id; ?>&user_id=<?php echo $user_id; ?>" class="delete" onclick="return confirm('Are you sure you want to delete this Progress?');">Delete</a>
