@@ -85,13 +85,13 @@ if (isset($_POST['resend'])) {
                 $mail->isSMTP(); // Set mailer to use SMTP
                 $mail->Host = 'smtp.gmail.com'; // Your SMTP server
                 $mail->SMTPAuth = true;
-                $mail->Username = 'angeloglennavilo@gmail.com'; // Your SMTP username
-                $mail->Password = 'nvhe zxmb jeno eyrd'; // Your SMTP 
+                $mail->Username = 'davaogymportal@gmail.com'; // Your SMTP username
+                $mail->Password = 'esyp btxq pfve kwvp'; // Your SMTP password
                 $mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 587; // TCP port to connect to
 
                 //Recipients
-                $mail->setFrom('no-reply@example.com', 'Verification'); // Change this to your sending email
+                $mail->setFrom('davaogymportal@gmail.com', 'Davao Gym Portal');
                 $mail->addAddress($email); // Add a recipient
 
                 // Content

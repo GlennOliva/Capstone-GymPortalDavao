@@ -161,13 +161,13 @@ if(isset($_POST['register'])) {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // Your SMTP server
             $mail->SMTPAuth = true;
-            $mail->Username = 'angeloglennavilo@gmail.com'; // Your SMTP username
-            $mail->Password = 'nvhe zxmb jeno eyrd'; // Your SMTP password
+            $mail->Username = 'davaogymportal@gmail.com'; // Your SMTP username
+            $mail->Password = 'esyp btxq pfve kwvp'; // Your SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
             // Recipients
-            $mail->setFrom('your_email@example.com', 'Davao Gym Portal');
+            $mail->setFrom('davaogymportal@gmail.com', 'Davao Gym Portal');
             $mail->addAddress($email, $first_name . ' ' . $last_name);
 
             // Content

@@ -320,6 +320,10 @@ textarea {
             <input type="number" placeholder="Quantity" name="quantity" required>
         </div>
 
+        <div class="row">
+            <input type="date" placeholder="date" name="date" required>
+        </div>
+
         <!-- Buttons -->
         <div class="buttons">
             <input type="submit" class="upload-btn" value="Add Inventory" name="submit_inventory"> <!-- Changed button -->
@@ -336,6 +340,7 @@ if (isset($_POST['submit_inventory'])) {
     $gym_id = $_POST['gym_id'];
     $inventory_name = $_POST['inventory_name'];
     $quantity = $_POST['quantity'];
+    $date = $_POST['date'];
 
 
     // Image upload handling
@@ -366,8 +371,8 @@ if (isset($_POST['submit_inventory'])) {
     }
 
     // Insert query for the service
-    $sql = "INSERT INTO tbl_inventory (admin_id, gym_id, inventory_name, quantity, inventory_image)
-            VALUES ('$admin_id', '$gym_id', '$inventory_name', '$quantity', '$image_name')";
+    $sql = "INSERT INTO tbl_inventory (admin_id, gym_id, inventory_name, quantity, inventory_image, created_at)
+            VALUES ('$admin_id', '$gym_id', '$inventory_name', '$quantity', '$image_name', '$date')";
 
     // Execute the query
     $res = mysqli_query($conn, $sql);

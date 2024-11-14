@@ -372,6 +372,10 @@ textarea {
         </div>
         <!-- Second row -->
 
+        <div class="row">
+            <input type="date" placeholder="date" name="date" required>
+        </div>
+
         <!-- Buttons -->
         <div class="buttons">
             <input type="submit" name="update_inventory" value="Edit" class="upload-btn">
@@ -386,6 +390,7 @@ if (isset($_POST['update_inventory'])) {
     $inventory_name = $_POST['inventory_name'];
     $quantity = $_POST['quantity'];
     $gym_id = $_POST['gym_id'];
+    $date = $_POST['date'];
 
     // Image upload handling
     if (isset($_FILES['class_image']['name']) && $_FILES['class_image']['name'] != "") {
@@ -415,7 +420,7 @@ if (isset($_POST['update_inventory'])) {
     }
 
     // Update query
-    $sql = "UPDATE tbl_inventory SET gym_id='$gym_id', inventory_name='$inventory_name', quantity = '$quantity', inventory_image='$image_name' WHERE id=$id";
+    $sql = "UPDATE tbl_inventory SET gym_id='$gym_id', inventory_name='$inventory_name', quantity = '$quantity', inventory_image='$image_name', created_at = '$date' WHERE id=$id";
 
     // Execute the query
     $res = mysqli_query($conn, $sql);

@@ -161,7 +161,7 @@
             // Close the modal and redirect to register.php when "Agree" is clicked
             var privacyModal = bootstrap.Modal.getInstance(document.getElementById('privacyModal'));
             privacyModal.hide();
-            window.location.href = 'register.php';
+            window.location.href = '../admin/admin_register.php';
         }
     </script>
 </html>
