@@ -205,7 +205,7 @@ if (isset($_SESSION['user_id'])) {
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li class="dropdown-item">Welcome: <?php echo $username;?></li>
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                            <li><a class="dropdown-item" href="login.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="logout.php" >Logout</a></li>
                         </ul>
                     </li>
                 </ul>

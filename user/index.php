@@ -112,7 +112,7 @@
             <div class="carousel-caption text-start" style="margin-bottom: 10%;">
                 <h1 class="display-4" style="color:white;">"Your Fitness Journey Starts Here"</h1>
                 <p class="lead" style="color:white;">Get in shape, stay in shape.</p>
-                <a href="home.php" class="btn btn-warning btn-lg">FIND GYM</a>
+                <a href="register.php" class="btn btn-warning btn-lg">FIND GYM</a>
             </div>
         </div>
     </section>

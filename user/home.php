@@ -83,7 +83,7 @@ if (isset($_SESSION['user_id'])) {
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li class="dropdown-item" style="color:#000000">Welcome: <?php echo $username;?></li>
                             <li><a class="dropdown-item" href="profile.php" style="color:#000000">Profile</a></li>
-                            <li><a class="dropdown-item" href="login.php" style="color:#000000">Logout</a></li>
+                            <li><a class="dropdown-item" href="logout.php" style="color:#000000">Logout</a></li>
                         </ul>
                     </li>
                 </ul>

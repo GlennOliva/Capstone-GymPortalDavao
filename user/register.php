@@ -125,6 +125,9 @@ require '../vendor/autoload.php';
     <hr style="border: 1px solid #000;">
     <button type="submit" class="btn register-btn" name="register">Create New Account</button>
 
+    <hr style="border: 1px solid #000;">
+    <a href="login.php" class="btn login-btn">LOGIN</a>
+
     <!-- <a href="login.php" class="btn login-btn">Login</a> -->
 </form>
 

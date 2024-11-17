@@ -194,7 +194,7 @@ if (isset($_SESSION['admin_id'])) {
         <nav >
 			<i class='bx bx-menu toggle-sidebar'></i>
 			<div class="profile" style="margin-left: 92%;">
-            <img src="admin_image/<?php echo $image;?>" alt="">
+            <img src="<?php echo !empty($image) ? 'admin_image/' . $image : 'profile_image/admin_defaultprofile.png'; ?>" alt="Owner Image">
                 <ul class="profile-link">
                 <li><p style="padding-left: 10%; padding-top: 3%;">Hi there! <b><?php echo $admin_name;?></b></p></li>
 					<li><a href="profile.php"><i class='bx bxs-user-circle icon'></i> Profile</a></li>

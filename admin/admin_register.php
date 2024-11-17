@@ -123,8 +123,8 @@ require '../vendor/autoload.php';
     </div>
     <hr style="border: 1px solid #000;">
     <button type="submit" class="btn register-btn" name="register">Create New Account</button>
-
-
+    <hr style="border: 1px solid #000;">
+    <a href="admin_login.php" class="btn login-btn">LOGIN</a>
 </form>
 
 

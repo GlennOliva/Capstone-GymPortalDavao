@@ -192,7 +192,7 @@ if (isset($_SESSION['user_id'])) {
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li class="dropdown-item" style="color:#000000">Welcome: <?php echo $username;?></li>
                             <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                            <li><a class="dropdown-item" href="login.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="logout.php" >Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -229,34 +229,40 @@ if (isset($_SESSION['user_id'])) {
     }
     $stmt->close();
 
-    // Second SQL statement for about information
-    if (isset($_GET['id']) && isset($_GET['admin_id'])) {
-        $gym_id = $_GET['id'];
-        $admin_id = $_GET['admin_id'];
+   // Second SQL statement for about information
+if (isset($_GET['id']) && isset($_GET['admin_id'])) {
+    $gym_id = $_GET['id'];
+    $admin_id = $_GET['admin_id'];
 
-        $sql = "SELECT * FROM tbl_about WHERE gym_id = ? AND admin_id = ?";
-        $stmt = $conn->prepare($sql);
-        if ($stmt) {
-            $stmt->bind_param("ii", $gym_id, $admin_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
+    $sql = "SELECT * FROM tbl_about WHERE gym_id = ? AND admin_id = ?";
+    $stmt = $conn->prepare($sql);
+    if ($stmt) {
+        $stmt->bind_param("ii", $gym_id, $admin_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-            // Check if there are records
-            if ($result->num_rows > 0) {
-                $gym = $result->fetch_assoc();
-                $about_image = $gym['about_image'];
-                $about_purpose = $gym['purpose'];
-                $about_summary = $gym['summary'];
-            } else {
-                echo "<p>No gym found</p>";
-            }
-            $stmt->close();
+        // Check if there are records
+        if ($result->num_rows > 0) {
+            $gym = $result->fetch_assoc();
+            $about_image = $gym['about_image'];
+            $about_purpose = $gym['purpose'];
+            $about_summary = $gym['summary'];
         } else {
-            echo "<p>Failed to prepare SQL statement.</p>";
+            // Default content when no data exists
+            $about_image = "image_placeholder.jpg"; // Placeholder image
+            $about_purpose = "No purpose has been set yet.";
+            $about_summary = "No summary content has been added.";
         }
+        $stmt->close();
     } else {
-        echo "<p>Invalid parameters.</p>";
+        echo "<p>Failed to prepare SQL statement.</p>";
     }
+} else {
+    echo "<p>Invalid parameters.</p>";
+}
+
+// Use $about_image, $about_purpose, and $about_summary as needed
+
     ?>
     <!-- Main Container -->
    <!-- Main Container -->
