@@ -123,7 +123,7 @@ if (isset($_SESSION['user_id'])) {
                     }
             ?>
                     <div class="col-12 col-md-3">
-                        <div class="card" style="height: 70vh;">
+                        <div class="card" style="height: 85vh;">
                             <img src="../admin/gym_image/<?php echo $gym_image; ?>" class="card-img-top" alt="Gym Image">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $gym_name; ?></h5>

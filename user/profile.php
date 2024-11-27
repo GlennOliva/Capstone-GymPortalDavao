@@ -217,7 +217,8 @@ if (isset($_SESSION['user_id'])) {
     <section class="container">
         <!-- Sidebar -->
         <div class="sidebar text-center">
-            <img src="user_image/<?php echo $image;?>" alt="User Image">
+        <img src="<?php echo !empty($image) ? 'user_image/' . $image : '../admin/profile_image/userpng.png'; ?>" alt="Owner Image">
+           
             <p>Name: <?php echo $fullname;?></p>
             <p>Age: <?php echo $age;?></p>
             <p>Email: <?php echo $email;?></p>
@@ -250,7 +251,16 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                     <div class="form-group">
                         <label for="contact">Contact #</label>
-                        <input type="text" class="form-control" name="contact" id="contact" placeholder="Contact Number" value="<?php echo $contact_no;?>" required>
+                    <input 
+                            type="text" 
+                            class="form-control" 
+                            name="contact" 
+                            placeholder="Contact #" 
+                            maxlength="11" 
+                            oninput="validateContact(this)" 
+                            required
+                            value="<?php echo $contact_no;?>">
+                    >
                     </div>
                     <div class="form-group">
                     <label for="name">Password</label>
@@ -298,6 +308,19 @@ if (isset($_SESSION['user_id'])) {
             </form>
         </div>
     </section>
+
+
+    <script>
+        function validateContact(input) {
+        // Allow only numeric values
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Ensure the length is at most 11
+        if (input.value.length > 11) {
+            input.value = input.value.slice(0, 11);
+        }
+    }
+    </script>
 
 
     <?php

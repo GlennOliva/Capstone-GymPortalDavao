@@ -454,7 +454,7 @@ if (isset($_SESSION['user_id'])) {
                 }
                 echo '</div>';
             } else {
-                echo "<p>No class found</p>";
+                echo "<p>No Inventory found</p>";
             }
             $stmt->close();
         } else {

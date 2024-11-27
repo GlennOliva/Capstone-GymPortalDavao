@@ -214,6 +214,7 @@ if (isset($_SESSION['admin_id'])) {
 	<section id="sidebar">
         <h1 class="logo">GYM PORTAL DAVAO</h1>
 		<ul class="side-menu">
+        <li><a href="dashboard.php"><i class='bx bxs-dashboard icon'></i> Dashboard</a></li>
             <li><a href="profile.php" class="active"><i class='bx bxs-user-circle icon'></i> Profile</a></li>
             <li><a href="gym.php" ><i class='bx bx-dumbbell icon'></i> Gym</a></li>
             <li><a href="gym_about.php" ><i class='bx bxs-inbox icon'></i> About</a></li>
@@ -290,15 +291,23 @@ if (isset($_SESSION['admin_id'])) {
                             <input type="text" placeholder="Middle Name" name="middlename" value="<?php echo $middle_name;?>" required>
                         </div>
                         <div class="row">
-                        <input type="text" placeholder="Last Name" name="username" value="<?php echo $username;?>" required>
-                            <input type="password" placeholder="Enter Current Password" name="current_password" required>
-                            <input type="password" placeholder="Enter New Password" name="new_password"  required>
+                        <input type="text" placeholder="Username" name="username" value="<?php echo $username;?>" required>
+                            <input type="password" placeholder="Enter Current Password" name="current_password">
+                            <input type="password" placeholder="Enter New Password" name="new_password"  >
                             
                         </div>
                         <!-- Second row -->
                         <div class="contact-group">
                             <input type="email" placeholder="Email" name="email" value="<?php echo $email;?>" required>
-                            <input type="tel" placeholder="Contact #" name="contact_no" value="<?php echo $contact_no;?>" required>
+                            <input 
+        type="text" 
+        class="form-control" 
+        name="contact_no" 
+        placeholder="Contact #" 
+        maxlength="11" 
+        oninput="validateContact(this)" 
+        required
+        value="<?php echo $contact_no;?>">
                             <input type="file" name="image" id="" placeholder="Image">
                         </div>
 
@@ -314,19 +323,59 @@ if (isset($_SESSION['admin_id'])) {
             </div>
         </main>
 
-        <?php
+
+        <script>
+            
+function validateContact(input) {
+        // Allow only numeric values
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Ensure the length is at most 11
+        if (input.value.length > 11) {
+            input.value = input.value.slice(0, 11);
+        }
+    }
+        </script>
+
+<?php
 if (isset($_POST['update_profile'])) {
     $id = $_POST['id'];
     $lastname = $_POST['lastname'];
     $firstname = $_POST['firstname'];
     $middlename = $_POST['middlename'];
-    $currentpassword = md5($_POST['current_password']);
-    $newpassword = isset($_POST['new_password']) && !empty($_POST['new_password']) ? md5($_POST['new_password']) : $currentpassword;  // Fallback to current password if new password is not set
     $email = $_POST['email'];
     $contact_no = $_POST['contact_no'];
     $username = $_POST['username'];
 
+    // Handle password
+    $current_password = $_POST['current_password'];
+    $new_password = $_POST['new_password'];
 
+    // Check if the new password is provided
+    if (!empty($new_password)) {
+        $password = md5($new_password); // Hash the new password
+    } else {
+        // Retain the current password
+        $get_password_sql = "SELECT password FROM tbl_admin WHERE id = $id";
+        $password_result = mysqli_query($conn, $get_password_sql);
+        if ($password_result && mysqli_num_rows($password_result) > 0) {
+            $password_row = mysqli_fetch_assoc($password_result);
+            $password = $password_row['password'];
+        } else {
+            echo '<script>
+                swal({
+                    title: "Error",
+                    text: "Failed to retrieve current password",
+                    icon: "error"
+                }).then(function() {
+                    window.location = "profile.php";
+                });
+            </script>';
+            exit;
+        }
+    }
+
+    // Handle image upload
     $image_name = isset($_FILES['image']['name']) ? $_FILES['image']['name'] : "";
     if ($image_name != "") {
         $ext_parts = explode('.', $image_name);
@@ -347,52 +396,49 @@ if (isset($_POST['update_profile'])) {
             </script>';
             exit;
         }
+    } else {
+        // Retain the current image if no new image is uploaded
+        $image_name = $_POST['current_image'];
     }
 
     // Update the database
-    $update_sql = "SELECT * FROM tbl_admin WHERE id = $id";
-    $update_result = mysqli_query($conn, $update_sql);
-    if ($update_result == true) {
-        $update_count = mysqli_num_rows($update_result);
+    $sql = "UPDATE tbl_admin SET
+        first_name = '$firstname',
+        last_name = '$lastname',
+        middle_name = '$middlename',
+        email = '$email',
+        contact_no = '$contact_no',
+        username = '$username',
+        password = '$password',
+        image = '$image_name'
+        WHERE id = $id";
 
-        if ($update_count == 1) {
-            $sql = "UPDATE tbl_admin SET
-                first_name = '$firstname',
-                last_name = '$lastname',
-                middle_name = '$middlename',
-                email = '$email',
-                contact_no = '$contact_no',
-                username = '$username',
-                password = '$newpassword',
-                image = '$image_name'
-                WHERE id = $id";  // Ensure you add the WHERE clause
-            $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);
 
-            if ($result) {
-                echo '<script>
-                    swal({
-                        title: "Success",
-                        text: "Profile updated successfully",
-                        icon: "success"
-                    }).then(function() {
-                        window.location = "profile.php";
-                    });
-                </script>';
-            } else {
-                echo '<script>
-                    swal({
-                        title: "Error",
-                        text: "Failed to update profile",
-                        icon: "error"
-                    }).then(function() {
-                        window.location = "profile.php";
-                    });
-                </script>';
-            }
-        }
+    if ($result) {
+        echo '<script>
+            swal({
+                title: "Success",
+                text: "Profile updated successfully",
+                icon: "success"
+            }).then(function() {
+                window.location = "profile.php";
+            });
+        </script>';
+    } else {
+        echo '<script>
+            swal({
+                title: "Error",
+                text: "Failed to update profile",
+                icon: "error"
+            }).then(function() {
+                window.location = "profile.php";
+            });
+        </script>';
     }
 }
 ?>
+
 
         
 		<!-- MAIN -->

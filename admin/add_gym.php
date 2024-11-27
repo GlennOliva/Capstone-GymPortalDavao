@@ -225,6 +225,7 @@ if (isset($_SESSION['admin_id'])) {
 	<section id="sidebar">
         <h1 class="logo">GYM PORTAL DAVAO</h1>
 		<ul class="side-menu">
+        <li><a href="dashboard.php"><i class='bx bxs-dashboard icon'></i> Dashboard</a></li>
             <li><a href="profile.php" ><i class='bx bxs-user-circle icon'></i> Profile</a></li>
             <li><a href="gym.php" class="active"><i class='bx bx-dumbbell icon'></i> Gym</a></li>
             <li><a href="gym_about.php" ><i class='bx bxs-inbox icon'></i> About</a></li>
@@ -287,7 +288,14 @@ if (isset($_SESSION['admin_id'])) {
         <div class="row">
             <input type="text" placeholder="Gym Name" name="gym_name" required>
             <input type="email" placeholder="Gym Email" name="gym_email" required>
-            <input type="tel" placeholder="Gym Contact #" name="gym_contact" required>
+            <input 
+        type="text" 
+        class="form-control" 
+        name="gym_contact" 
+        placeholder="Contact #" 
+        maxlength="11" 
+        oninput="validateContact(this)" 
+        required>
         </div>
         
         <!-- Second row -->
@@ -309,6 +317,18 @@ if (isset($_SESSION['admin_id'])) {
         </div>
     </div>
 </form>
+
+<script>
+    function validateContact(input) {
+        // Allow only numeric values
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Ensure the length is at most 11
+        if (input.value.length > 11) {
+            input.value = input.value.slice(0, 11);
+        }
+    }
+</script>
 
 
 <?php

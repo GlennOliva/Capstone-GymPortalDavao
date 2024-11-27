@@ -167,6 +167,7 @@ if (isset($_SESSION['admin_id'])) {
 	<section id="sidebar">
         <h1 class="logo">GYM PORTAL DAVAO</h1>
 		<ul class="side-menu">
+        <li><a href="dashboard.php"><i class='bx bxs-dashboard icon'></i> Dashboard</a></li>
             <li><a href="profile.php" ><i class='bx bxs-user-circle icon'></i> Profile</a></li>
             <li><a href="gym.php" ><i class='bx bx-dumbbell icon'></i> Gym</a></li>
             <li><a href="gym_about.php" class="active"><i class='bx bxs-inbox icon'></i> About</a></li>

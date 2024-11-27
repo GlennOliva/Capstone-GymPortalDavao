@@ -86,7 +86,7 @@ if (isset($_POST['resend'])) {
                 $mail->Host = 'smtp.gmail.com'; // Your SMTP server
                 $mail->SMTPAuth = true;
                 $mail->Username = 'davaogymportal@gmail.com'; // Your SMTP username
-                $mail->Password = 'esyp btxq pfve kwvp'; // Your SMTP password
+                $mail->Password = 'lfyl tvzn gqzs wcvr'; // Your SMTP password
                 $mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
                 $mail->Port = 587; // TCP port to connect to
 

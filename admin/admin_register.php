@@ -99,8 +99,28 @@ require '../vendor/autoload.php';
             <input type="email" class="form-control" name="email" placeholder="Email Address" required>
         </div>
         <div class="col-md-6">
-    <input type="text" maxlength="11" pattern="\d{11}" class="form-control" name="contact" placeholder="Contact #" required>
+        <input 
+        type="text" 
+        class="form-control" 
+        name="contact" 
+        placeholder="Contact #" 
+        maxlength="11" 
+        oninput="validateContact(this)" 
+        required>
+
 </div>
+
+<script>
+    function validateContact(input) {
+        // Allow only numeric values
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Ensure the length is at most 11
+        if (input.value.length > 11) {
+            input.value = input.value.slice(0, 11);
+        }
+    }
+</script>
 
     </div>
     <hr style="border: 1px solid #000;">
@@ -162,7 +182,7 @@ if(isset($_POST['register'])) {
             $mail->Host = 'smtp.gmail.com'; // Your SMTP server
             $mail->SMTPAuth = true;
             $mail->Username = 'davaogymportal@gmail.com'; // Your SMTP username
-            $mail->Password = 'esyp btxq pfve kwvp'; // Your SMTP password
+            $mail->Password = 'lfyl tvzn gqzs wcvr'; // Your SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 

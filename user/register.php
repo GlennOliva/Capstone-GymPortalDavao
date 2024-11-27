@@ -101,8 +101,15 @@ require '../vendor/autoload.php';
             <input type="email" class="form-control" name="email" placeholder="Email Address" required>
         </div>
         <div class="col-md-6">
-            <input type="text" class="form-control" name="contact" placeholder="Contact #" required>
-        </div>
+    <input 
+        type="text" 
+        class="form-control" 
+        name="contact" 
+        placeholder="Contact #" 
+        maxlength="11" 
+        oninput="validateContact(this)" 
+        required>
+</div>
     </div>
     <hr style="border: 1px solid #000;">
     <div class="row">
@@ -117,11 +124,16 @@ require '../vendor/autoload.php';
         </div>
     </div>
     <div class="form-check my-3 d-flex justify-content-center align-items-center">
-        <input class="form-check-input me-2" type="checkbox" name="terms_agreement" id="termsAgreement" required>
-        <label class="form-check-label" for="termsAgreement">
-            Terms & Agreement
-        </label>
-    </div>
+    <input 
+        class="form-check-input me-2" 
+        type="checkbox" 
+        name="terms_agreement" 
+        id="termsAgreement" 
+        onclick="showPrivacyModal(this)">
+    <label class="form-check-label" for="termsAgreement">
+        Terms & Agreement
+    </label>
+</div>
     <hr style="border: 1px solid #000;">
     <button type="submit" class="btn register-btn" name="register">Create New Account</button>
 
@@ -132,6 +144,68 @@ require '../vendor/autoload.php';
 </form>
 
     </div>
+
+
+    <script>
+    function showPrivacyModal(checkbox) {
+        // Temporarily prevent the checkbox from changing state
+        checkbox.checked = false;
+
+        // Show the modal
+        var privacyModal = new bootstrap.Modal(document.getElementById('privacyModal'));
+        privacyModal.show();
+
+        // Handle the "Agree" button
+        document.getElementById('agreeButton').onclick = function () {
+            // Check the checkbox if the user agrees
+            checkbox.checked = true;
+            privacyModal.hide();
+        };
+
+        // Optional: Ensure the checkbox remains unchecked if modal is closed without agreement
+        document.getElementById('privacyModal').addEventListener('hidden.bs.modal', function () {
+            if (!checkbox.checked) {
+                checkbox.checked = false;
+            }
+        });
+    }
+
+
+    function validateContact(input) {
+        // Allow only numeric values
+        input.value = input.value.replace(/[^0-9]/g, '');
+
+        // Ensure the length is at most 11
+        if (input.value.length > 11) {
+            input.value = input.value.slice(0, 11);
+        }
+    }
+</script>
+
+
+<!-- Privacy Agreement Modal -->
+<div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyModalLabel">Privacy Agreement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <!-- Privacy content -->
+                <p><strong>Personal Data Collection:</strong> As part of our registration process, we collect essential personal information to ensure secure access and personalized service. This includes but is not limited to your name, contact information, and gym usage preferences. We handle all data in compliance with relevant data protection laws, ensuring that your information remains safe and private.</p>
+                <p><strong>Usage of Collected Data:</strong> The data we gather is solely for improving your experience and personalizing services within the Davao Gym Portal. This may include sending updates about gym activities, promotions, or any changes in gym policies. We do not share your information with third parties without your explicit consent.</p>
+                <p><strong>Security Measures:</strong> We take all necessary precautions to secure your data. Our system is equipped with advanced encryption to prevent unauthorized access, ensuring that only authorized personnel can handle your personal information. Your data will be stored securely and will only be used for the intended purpose as per our agreement.</p>
+                <p><strong>User Responsibilities:</strong> As a user, you agree to follow the gym rules, including respecting equipment, maintaining hygiene standards, and abiding by gym hours. Violations may lead to suspension or termination of access to our facilities to ensure a safe and enjoyable environment for all members.</p>
+                <p><strong>Right to Withdraw Consent:</strong> You may withdraw consent for the use of your data at any time by contacting our support team. Doing so may limit certain features of the Davao Gym Portal, but we will respect your privacy choices and discontinue data processing accordingly.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="agreeButton">Agree</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -169,7 +243,7 @@ if (isset($_POST['register'])) {
                 $mail->Host = 'smtp.gmail.com'; // Your SMTP server
                 $mail->SMTPAuth = true;
                 $mail->Username = 'davaogymportal@gmail.com'; // Your SMTP username
-                $mail->Password = 'esyp btxq pfve kwvp'; // Your SMTP password
+                $mail->Password = 'lfyl tvzn gqzs wcvr'; // Your SMTP password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
